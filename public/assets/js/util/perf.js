@@ -33,7 +33,7 @@
   var lcpObserver = new PerformanceObserver(function handleLCP(entryList) {
     var entries = entryList.getEntries() || [];
     entries.forEach(function(entry) {
-      if (entry.startTime > data.lcp) {
+      if (entry.startTime > data.lcp) {// this event happens multiple times. we get the last one
         data.lcp = entry.startTime;
         console.log("Recorded LCP Performance: " + data.lcp);
       }
@@ -43,7 +43,8 @@
   var clsObserver = new PerformanceObserver(function handleCLS(entryList) {
     var entries = entryList.getEntries() || [];
     entries.forEach(function(entry) {
-      if (!entry.hadRecentInput) {
+      if (!entry.hadRecentInput) {// layout shifts happens most of time ex dropdowns, video maximize, modals
+        // we dont want to capture the ones that are precedeed by click events
         data.cls += entry.value;
         console.log("Increased CLS Performance: " + data.cls);
       }
